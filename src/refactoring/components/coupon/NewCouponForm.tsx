@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { validateFields } from '@/refactoring/utils/helper';
 import type { Coupon } from '@/types';
 
 interface NewCouponFormProps {
@@ -16,6 +17,9 @@ export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
   const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);
 
   const handleAddCoupon = (newCoupon: Coupon) => {
+    if (validateFields<Coupon>(newCoupon, '새 쿠폰 정보를 입력해주세요.'))
+      return;
+
     onCouponAdd(newCoupon);
     setNewCoupon(initialNewCoupon);
   };
