@@ -1,27 +1,46 @@
 import { useState } from 'react';
+import { hasEmptyValue } from '@/refactoring/utils/helper';
 import type { Product } from '@/types';
 
 interface NewProductFormProps {
   onAddNewProduct: (newProduct: Product) => void;
 }
 
-export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
-  const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
-    name: '',
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
+const initialProduct = {
+  name: '',
+  price: 0,
+  stock: 0,
+};
 
-  const handleAddNewProduct = (newProduct: Omit<Product, 'id'>) => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onAddNewProduct(productWithId);
-    setNewProduct({
-      name: '',
-      price: 0,
-      stock: 0,
+export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
+  const [newProduct, setNewProduct] =
+    useState<Omit<Product, 'id' | 'discounts'>>(initialProduct);
+
+  const validateProductFields = (
+    newProduct: Omit<Product, 'id' | 'discounts'>,
+  ) => {
+    const result = hasEmptyValue(newProduct);
+
+    if (result) {
+      alert('새 상품 정보를 입력해주세요');
+    }
+
+    return result;
+  };
+
+  const handleAddNewProduct = (
+    newProduct: Omit<Product, 'id' | 'discounts'>,
+  ) => {
+    if (validateProductFields(newProduct)) return;
+
+    const productWithId = {
+      ...newProduct,
+      id: Date.now().toString(),
       discounts: [],
-    });
+    };
+
+    onAddNewProduct(productWithId);
+    setNewProduct(initialProduct);
   };
 
   return (
