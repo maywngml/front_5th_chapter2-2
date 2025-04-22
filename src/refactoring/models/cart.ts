@@ -1,7 +1,25 @@
-import { CartItem, Coupon } from "../../types";
+import { CartItem, Coupon, Product } from '../../types';
+
+export const getAppliedDiscount = (item: CartItem) => {
+  const { discounts } = item.product;
+  const { quantity } = item;
+  let appliedDiscount = 0;
+
+  for (const discount of discounts) {
+    if (quantity >= discount.quantity) {
+      appliedDiscount = Math.max(appliedDiscount, discount.rate);
+    }
+  }
+  return appliedDiscount;
+};
 
 export const calculateItemTotal = (item: CartItem) => {
-  return 0;
+  const { price } = item.product;
+  const { quantity } = item;
+  const totalPrice = price * quantity;
+  const appliedDiscount = getAppliedDiscount(item);
+
+  return totalPrice * (1 - appliedDiscount);
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
@@ -10,7 +28,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
 
 export const calculateCartTotal = (
   cart: CartItem[],
-  selectedCoupon: Coupon | null
+  selectedCoupon: Coupon | null,
 ) => {
   return {
     totalBeforeDiscount: 0,
@@ -22,7 +40,7 @@ export const calculateCartTotal = (
 export const updateCartItemQuantity = (
   cart: CartItem[],
   productId: string,
-  newQuantity: number
+  newQuantity: number,
 ): CartItem[] => {
   return [];
 };
