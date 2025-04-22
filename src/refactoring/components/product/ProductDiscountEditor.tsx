@@ -9,9 +9,11 @@ export const ProductDiscountEditor = ({
   product,
   onProductEdit,
 }: ProductDiscountEditorProps) => {
+  const { id, discounts } = product;
+
   return (
     <div>
-      {product.discounts.map((discount, index) => (
+      {discounts.map((discount, index) => (
         <div
           key={index}
           className='mb-2'
@@ -23,7 +25,7 @@ export const ProductDiscountEditor = ({
       ))}
       <button
         data-testid='modify-button'
-        onClick={() => onProductEdit(product.id)}
+        onClick={() => onProductEdit(id)}
         className='bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2'
       >
         수정
