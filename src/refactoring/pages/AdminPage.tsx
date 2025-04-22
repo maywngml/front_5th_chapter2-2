@@ -6,7 +6,7 @@ import {
 } from '@/refactoring/components/product';
 import { Coupon, Product } from '../../types.ts';
 
-interface Props {
+interface AdminPageProps {
   products: Product[];
   coupons: Coupon[];
   onProductUpdate: (updatedProduct: Product) => void;
@@ -20,13 +20,12 @@ export const AdminPage = ({
   onProductUpdate,
   onProductAdd,
   onCouponAdd,
-}: Props) => {
+}: AdminPageProps) => {
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProductId, setEditingProductId] = useState<string>('');
   const [showNewProductForm, setShowNewProductForm] = useState(false);
 
   const toggleProductAccordion = (productId: string) => {
-    // TODO: 이미 prev가 Set일 텐데 Set을 한번 더 쓰는 이유가 있나?
     setOpenProductIds((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(productId)) {
@@ -38,19 +37,22 @@ export const AdminPage = ({
     });
   };
 
+  const changeShowNewProductForm = () => {
+    setShowNewProductForm((prevShowNewProductForm) => !prevShowNewProductForm);
+  };
+
   const handleEditComplete = (newProduct: Product) => {
     onProductUpdate(newProduct);
     setEditingProductId('');
   };
 
-  // handleEditProduct 함수 수정
   const handleEditProduct = (productId: string) => {
     setEditingProductId(productId);
   };
 
   const handleAddNewProduct = (newProduct: Product) => {
     onProductAdd(newProduct);
-    setShowNewProductForm(false);
+    changeShowNewProductForm();
   };
 
   return (
@@ -60,7 +62,7 @@ export const AdminPage = ({
         <div>
           <h2 className='text-2xl font-semibold mb-4'>상품 관리</h2>
           <button
-            onClick={() => setShowNewProductForm(!showNewProductForm)}
+            onClick={changeShowNewProductForm}
             className='bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600'
           >
             {showNewProductForm ? '취소' : '새 상품 추가'}
