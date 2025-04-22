@@ -19,19 +19,21 @@ export const EditProductForm = ({
   });
 
   // 새로운 핸들러 함수 추가
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
-    }
+  const handleProductNameUpdate = (newName: string) => {
+    setEditingProduct((prevEditingProduct) => {
+      return { ...prevEditingProduct, name: newName };
+    });
   };
 
   // 새로운 핸들러 함수 추가
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
-    }
+  const handlePriceUpdate = (newPrice: number) => {
+    setEditingProduct((prevEditingProduct) => {
+      if (prevEditingProduct) {
+        return { ...prevEditingProduct, price: newPrice };
+      } else {
+        return prevEditingProduct;
+      }
+    });
   };
 
   // 수정 완료 핸들러 함수 추가
@@ -71,7 +73,7 @@ export const EditProductForm = ({
         <input
           type='text'
           value={editingProduct.name}
-          onChange={(e) => handleProductNameUpdate(product.id, e.target.value)}
+          onChange={(e) => handleProductNameUpdate(e.target.value)}
           className='w-full p-2 border rounded'
         />
       </div>
@@ -80,9 +82,7 @@ export const EditProductForm = ({
         <input
           type='number'
           value={editingProduct.price}
-          onChange={(e) =>
-            handlePriceUpdate(product.id, parseInt(e.target.value))
-          }
+          onChange={(e) => handlePriceUpdate(parseInt(e.target.value))}
           className='w-full p-2 border rounded'
         />
       </div>
