@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { hasEmptyValue } from '@/refactoring/utils/helper';
+import { validateFields } from '@/refactoring/utils/helper';
 import type { Product } from '@/types';
 
 interface NewProductFormProps {
@@ -16,30 +16,24 @@ export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
   const [newProduct, setNewProduct] =
     useState<Omit<Product, 'id' | 'discounts'>>(initialProduct);
 
-  const validateProductFields = (
-    newProduct: Omit<Product, 'id' | 'discounts'>,
-  ) => {
-    const result = hasEmptyValue(newProduct);
-
-    if (result) {
-      alert('새 상품 정보를 입력해주세요');
-    }
-
-    return result;
-  };
-
   const handleAddNewProduct = (
     newProduct: Omit<Product, 'id' | 'discounts'>,
   ) => {
-    if (validateProductFields(newProduct)) return;
+    if (
+      validateFields<Omit<Product, 'id' | 'discounts'>>(
+        newProduct,
+        '새 상품 정보를 입력해주세요.',
+      )
+    )
+      return;
 
-    const productWithId = {
+    const productWithIdAndDiscounts = {
       ...newProduct,
       id: Date.now().toString(),
       discounts: [],
     };
 
-    onAddNewProduct(productWithId);
+    onAddNewProduct(productWithIdAndDiscounts);
     setNewProduct(initialProduct);
   };
 
