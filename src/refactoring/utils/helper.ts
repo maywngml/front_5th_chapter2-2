@@ -12,3 +12,16 @@ export const hasEmptyValue = (obj: object) => {
     return false;
   });
 };
+
+export const validateFields = <T extends object>(
+  fields: T,
+  message: string,
+) => {
+  const result = hasEmptyValue(fields);
+
+  if (result) {
+    alert(message);
+  }
+
+  return result;
+};
