@@ -1,4 +1,17 @@
-import { CartItem, Coupon } from '../../types';
+import { CartItem, Coupon, Product } from '../../types';
+
+export const addProductToCart = (cart: CartItem[], product: Product) => {
+  const existingItem = cart.find((item) => item.product.id === product.id);
+
+  if (existingItem) {
+    return cart.map((item) =>
+      item.product.id === product.id
+        ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
+        : item,
+    );
+  }
+  return [...cart, { product, quantity: 1 }];
+};
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
   const { discounts } = item.product;
@@ -22,6 +35,22 @@ export const calculateItemTotal = (item: CartItem) => {
   return totalPrice * (1 - appliedDiscount);
 };
 
+const calculateDiscountedPrice = (price: number, coupon: Coupon | null) => {
+  let discountedPrice = price;
+
+  if (coupon) {
+    const { discountType, discountValue } = coupon;
+    if (discountType === 'amount') {
+      discountedPrice -= discountValue;
+    } else {
+      discountedPrice -=
+        +(1 - (100 - discountValue) / 100).toFixed(2) * discountedPrice;
+    }
+  }
+
+  return discountedPrice;
+};
+
 export const calculateCartTotal = (
   cart: CartItem[],
   selectedCoupon: Coupon | null,
@@ -30,20 +59,14 @@ export const calculateCartTotal = (
     (acc, { product, quantity }: CartItem) => acc + product.price * quantity,
     0,
   );
-  let totalAfterDiscount = cart.reduce(
+  const initialDiscountedPrice = cart.reduce(
     (acc, item) => acc + calculateItemTotal(item),
     0,
   );
-
-  if (selectedCoupon) {
-    const { discountType, discountValue } = selectedCoupon;
-    if (discountType === 'amount') {
-      totalAfterDiscount -= discountValue;
-    } else {
-      totalAfterDiscount -=
-        +(1 - (100 - discountValue) / 100).toFixed(2) * totalAfterDiscount;
-    }
-  }
+  const totalAfterDiscount = calculateDiscountedPrice(
+    initialDiscountedPrice,
+    selectedCoupon,
+  );
 
   return {
     totalBeforeDiscount,
