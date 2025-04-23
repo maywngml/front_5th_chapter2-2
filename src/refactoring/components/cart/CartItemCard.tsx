@@ -1,4 +1,5 @@
-import { Discount, Product } from '@/types';
+import { getMaxDiscount } from '@/refactoring/models/cart';
+import { Product } from '@/types';
 
 interface CartItemCardProps {
   remainingStock: number;
@@ -12,9 +13,6 @@ export const CartItemCard = ({
   addToCart,
 }: CartItemCardProps) => {
   const { id, name, price, discounts } = product;
-  const getMaxDiscount = (discounts: Discount[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { CartItem, Coupon, Product } from '../../types';
+import { CartItem, Coupon, Discount, Product } from '../../types';
 
 export const addProductToCart = (cart: CartItem[], product: Product) => {
   const existingItem = cart.find((item) => item.product.id === product.id);
@@ -24,6 +24,10 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
     }
   }
   return maxDiscount;
+};
+
+export const getMaxDiscount = (discounts: Discount[]) => {
+  return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
 };
 
 export const calculateItemTotal = (item: CartItem) => {
