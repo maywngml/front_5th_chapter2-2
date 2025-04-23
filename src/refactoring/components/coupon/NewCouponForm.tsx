@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { validateFields } from '@/refactoring/utils/helper';
+import { validateFields } from '@/refactoring/utils';
 import type { Coupon } from '@/types';
 
 interface NewCouponFormProps {
