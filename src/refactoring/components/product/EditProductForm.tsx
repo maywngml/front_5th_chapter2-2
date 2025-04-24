@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Button } from '../ui';
 import type { Product, Discount } from '@/types';
 
@@ -19,19 +19,25 @@ export const EditProductForm = ({
     rate: 0,
   });
 
-  // 새로운 핸들러 함수 추가
-  const handleProductNameUpdate = (newName: string) => {
-    setEditingProduct((prevEditingProduct) => {
-      return { ...prevEditingProduct, name: newName };
-    });
-  };
+  const handleChangeProduct = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type } = e.target;
 
-  // 새로운 핸들러 함수 추가
-  const handlePriceUpdate = (newPrice: number) => {
     setEditingProduct((prevEditingProduct) => {
       return {
         ...prevEditingProduct,
-        price: newPrice,
+        [name]: type === 'number' ? parseInt(value) : value,
+      };
+    });
+  };
+
+  const handleChangeDiscount = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const intValue = parseInt(value);
+
+    setNewDiscount((prevNewDiscount) => {
+      return {
+        ...prevNewDiscount,
+        [name]: name === 'rate' ? intValue / 100 : intValue,
       };
     });
   };
@@ -39,12 +45,6 @@ export const EditProductForm = ({
   // 수정 완료 핸들러 함수 추가
   const handleEditComplete = () => {
     onCompleteEdit(editingProduct);
-  };
-
-  const handleStockUpdate = (newStock: number) => {
-    const newProduct = { ...editingProduct, stock: newStock };
-    onProductUpdate(newProduct);
-    setEditingProduct(newProduct);
   };
 
   const handleAddDiscount = () => {
@@ -72,8 +72,9 @@ export const EditProductForm = ({
         <label className='block mb-1'>상품명: </label>
         <input
           type='text'
+          name='name'
           value={editingProduct.name}
-          onChange={(e) => handleProductNameUpdate(e.target.value)}
+          onChange={handleChangeProduct}
           className='w-full p-2 border rounded'
         />
       </div>
@@ -81,8 +82,9 @@ export const EditProductForm = ({
         <label className='block mb-1'>가격: </label>
         <input
           type='number'
+          name='price'
           value={editingProduct.price}
-          onChange={(e) => handlePriceUpdate(parseInt(e.target.value))}
+          onChange={handleChangeProduct}
           className='w-full p-2 border rounded'
         />
       </div>
@@ -90,8 +92,9 @@ export const EditProductForm = ({
         <label className='block mb-1'>재고: </label>
         <input
           type='number'
+          name='stock'
           value={editingProduct.stock}
-          onChange={(e) => handleStockUpdate(parseInt(e.target.value))}
+          onChange={handleChangeProduct}
           className='w-full p-2 border rounded'
         />
       </div>
@@ -119,26 +122,18 @@ export const EditProductForm = ({
         <div className='flex space-x-2'>
           <input
             type='number'
+            name='quantity'
             placeholder='수량'
             value={newDiscount.quantity}
-            onChange={(e) =>
-              setNewDiscount({
-                ...newDiscount,
-                quantity: parseInt(e.target.value),
-              })
-            }
+            onChange={handleChangeDiscount}
             className='w-1/3 p-2 border rounded'
           />
           <input
             type='number'
+            name='rate'
             placeholder='할인율 (%)'
             value={newDiscount.rate * 100}
-            onChange={(e) =>
-              setNewDiscount({
-                ...newDiscount,
-                rate: parseInt(e.target.value) / 100,
-              })
-            }
+            onChange={handleChangeDiscount}
             className='w-1/3 p-2 border rounded'
           />
           <Button
