@@ -17,7 +17,7 @@ const initialNewCoupon: Coupon = {
 export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
   const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);
 
-  const handleAddCoupon = () => {
+  const handleClick = () => {
     if (validateFields<Coupon>(newCoupon, '새 쿠폰 정보를 입력해주세요.'))
       return;
 
@@ -72,7 +72,7 @@ export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
         className='w-full p-2'
         variant='solid'
         color='green'
-        onClick={handleAddCoupon}
+        onClick={handleClick}
       >
         쿠폰 추가
       </Button>
