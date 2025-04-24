@@ -1,4 +1,5 @@
 import { MouseEvent } from 'react';
+import { Button } from '../ui';
 import { getAppliedDiscountRate } from '@/refactoring/models/cart';
 import type { CartItem } from '@/types';
 
@@ -49,26 +50,32 @@ export const CartItemCard = ({
         </span>
       </div>
       <div>
-        <button
-          onClick={handleClickQuantity}
+        <Button
+          className='px-2 py-1 mr-1'
+          variant='solid'
+          color='gray'
           data-change='-1'
-          className='bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400'
+          onClick={handleClickQuantity}
         >
           -
-        </button>
-        <button
-          onClick={handleClickQuantity}
+        </Button>
+        <Button
+          className='px-2 py-1 mr-1'
+          variant='solid'
+          color='gray'
           data-change='1'
-          className='bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400'
+          onClick={handleClickQuantity}
         >
           +
-        </button>
-        <button
+        </Button>
+        <Button
+          className='px-2 py-1'
+          variant='solid'
+          color='red'
           onClick={handleClickDelete}
-          className='bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'
         >
           삭제
-        </button>
+        </Button>
       </div>
     </div>
   );
