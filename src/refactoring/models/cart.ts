@@ -13,6 +13,20 @@ export const addProductToCart = (cart: CartItem[], product: Product) => {
   return [...cart, { product, quantity: 1 }];
 };
 
+export const getAppliedDiscountRate = (item: CartItem) => {
+  const { discounts } = item.product;
+  const { quantity } = item;
+  let appliedDiscountRate = 0;
+
+  for (const discount of discounts) {
+    if (quantity >= discount.quantity) {
+      appliedDiscountRate = Math.max(appliedDiscountRate, discount.rate);
+    }
+  }
+
+  return appliedDiscountRate;
+};
+
 export const getMaxApplicableDiscount = (item: CartItem) => {
   const { discounts } = item.product;
   const { quantity } = item;

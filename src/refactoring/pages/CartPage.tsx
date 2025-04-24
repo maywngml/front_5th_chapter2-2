@@ -1,5 +1,6 @@
 import { ProductCardWithAdd } from '../components/cart';
 import { useCart } from '../hooks';
+import { getAppliedDiscountRate } from '../models/cart.ts';
 import type { CartItem, Coupon, Product } from '../../types.ts';
 
 interface Props {
@@ -26,18 +27,6 @@ export const CartPage = ({ products, coupons }: Props) => {
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
-
   return (
     <div className='container mx-auto p-4'>
       <h1 className='text-3xl font-bold mb-6'>장바구니</h1>
@@ -63,7 +52,7 @@ export const CartPage = ({ products, coupons }: Props) => {
 
           <div className='space-y-2'>
             {cart.map((item) => {
-              const appliedDiscount = getAppliedDiscount(item);
+              const appliedDiscount = getAppliedDiscountRate(item);
               return (
                 <div
                   key={item.product.id}
