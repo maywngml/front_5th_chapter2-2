@@ -21,8 +21,9 @@ export const Select = ({ name, options, className, ...rest }: SelectProps) => {
       className={newClassName}
       {...rest}
     >
-      {options.map(({ value, content, ...rest }: Option) => (
+      {options.map(({ key, value, content, ...rest }: Option) => (
         <option
+          key={key}
           value={value}
           {...rest}
         >
