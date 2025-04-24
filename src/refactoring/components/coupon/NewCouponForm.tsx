@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Button } from '../ui';
+import { Button, Select } from '../ui';
 import { validateFields } from '@/refactoring/utils';
 import type { Coupon } from '@/types';
 
@@ -13,6 +13,19 @@ const initialNewCoupon: Coupon = {
   discountType: 'percentage',
   discountValue: 0,
 };
+
+const couponOptions = [
+  {
+    key: 'coupon-amount',
+    value: 'amount',
+    content: '금액(원)',
+  },
+  {
+    key: 'coupon-percentage',
+    value: 'percentage',
+    content: '할인율(%)',
+  },
+];
 
 export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
   const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);
@@ -29,6 +42,7 @@ export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value, type } = e.target;
+
     setNewCoupon((prevNewCoupon) => {
       return {
         ...prevNewCoupon,
@@ -56,15 +70,12 @@ export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
         className='w-full p-2 border rounded'
       />
       <div className='flex gap-2'>
-        <select
-          value={newCoupon.discountType}
+        <Select
           name='discountType'
           onChange={handleChange}
-          className='w-full p-2 border rounded'
-        >
-          <option value='amount'>금액(원)</option>
-          <option value='percentage'>할인율(%)</option>
-        </select>
+          className='w-full p-2'
+          options={couponOptions}
+        ></Select>
         <input
           type='number'
           placeholder='할인 값'
