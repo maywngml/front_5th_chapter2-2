@@ -1,4 +1,4 @@
-import { CartItemCard } from '../components/cart';
+import { ProductCard } from '../components/product';
 import { useCart } from '../hooks';
 import type { CartItem, Coupon, Product } from '../../types.ts';
 
@@ -48,7 +48,7 @@ export const CartPage = ({ products, coupons }: Props) => {
             {products.map((product) => {
               const remainingStock = getRemainingStock(cart, product);
               return (
-                <CartItemCard
+                <ProductCard
                   key={`cart-item-card-${product.id}`}
                   remainingStock={remainingStock}
                   product={product}

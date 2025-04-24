@@ -1,17 +1,17 @@
 import { getMaxDiscount } from '@/refactoring/models/cart';
 import { Product } from '@/types';
 
-interface CartItemCardProps {
+interface ProductCardProps {
   remainingStock: number;
   product: Product;
   addToCart: (product: Product) => void;
 }
 
-export const CartItemCard = ({
+export const ProductCard = ({
   remainingStock,
   product,
   addToCart,
-}: CartItemCardProps) => {
+}: ProductCardProps) => {
   const { id, name, price, discounts } = product;
 
   return (
