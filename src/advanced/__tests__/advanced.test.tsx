@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/pages/CartPage';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
+import * as utils from '@/refactoring/utils';
 import { Coupon, Product } from '../../types';
 
 const mockProducts: Product[] = [
@@ -268,13 +269,50 @@ describe('advanced > ', () => {
     });
   });
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('hasEmptyValue', () => {
+    test('객체의 value 중에 빈 값이 하나라도 있다면 true를 반환한다.', () => {
+      const input = { key: 123, key2: '123', key3: '' };
+
+      expect(utils.hasEmptyValue(input)).toBe(true);
     });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    test('객체의 value 중에 빈 값이 없다면 false를 반환한다.', () => {
+      const input = { key: 123, key2: '123', key3: '123' };
+
+      expect(utils.hasEmptyValue(input)).toBe(false);
     });
+
+    test('객체의 value 중에 null이 있다면 true를 반환한다.', () => {
+      const input = { key: null, key2: '123', key3: '123' };
+
+      expect(utils.hasEmptyValue(input)).toBe(true);
+    });
+
+    test('객체의 value 중에 undefined가 있다면 true를 반환한다.', () => {
+      const input = { key: undefined, key2: '123', key3: '123' };
+
+      expect(utils.hasEmptyValue(input)).toBe(true);
+    });
+  });
+});
+
+describe('validateFields', () => {
+  beforeEach(() => {
+    vi.spyOn(window, 'alert').mockImplementation(() => {});
+  });
+  test('객체의 value 중에 빈 값이 있다면 alert을 표시합니다.', () => {
+    const input = { key: undefined, key2: '123', key3: '123' };
+    const message = '빈 값을 채워주세요.';
+
+    utils.validateFields(input, message);
+
+    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining(message));
+  });
+
+  test('객체의 value 중에 빈 값이 없다면 결과를 반환합니다.', () => {
+    const input = { key: 123, key2: '123', key3: '123' };
+    const message = '빈 값을 채워주세요.';
+
+    expect(utils.validateFields(input, message)).toBe(false);
   });
 });
