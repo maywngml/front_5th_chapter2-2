@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '../ui';
 import { validateFields } from '@/refactoring/utils';
 import type { Product } from '@/types';
 
@@ -16,9 +17,7 @@ export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
   const [newProduct, setNewProduct] =
     useState<Omit<Product, 'id' | 'discounts'>>(initialProduct);
 
-  const handleAddNewProduct = (
-    newProduct: Omit<Product, 'id' | 'discounts'>,
-  ) => {
+  const handleClick = () => {
     if (
       validateFields<Omit<Product, 'id' | 'discounts'>>(
         newProduct,
@@ -97,14 +96,14 @@ export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
           className='w-full p-2 border rounded'
         />
       </div>
-      <button
-        onClick={() => {
-          handleAddNewProduct(newProduct);
-        }}
-        className='w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600'
+      <Button
+        className='w-full p-2'
+        variant='solid'
+        color='blue'
+        onClick={handleClick}
       >
         추가
-      </button>
+      </Button>
     </div>
   );
 };
