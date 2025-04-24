@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '../ui';
 import type { Product, Discount } from '@/types';
 
 interface EditProductFormProps {
@@ -105,12 +106,14 @@ export const EditProductForm = ({
             <span>
               {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
             </span>
-            <button
+            <Button
+              className='px-2 py-1'
+              variant='solid'
+              color='red'
               onClick={() => handleRemoveDiscount(index)}
-              className='bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'
             >
               삭제
-            </button>
+            </Button>
           </div>
         ))}
         <div className='flex space-x-2'>
@@ -138,20 +141,24 @@ export const EditProductForm = ({
             }
             className='w-1/3 p-2 border rounded'
           />
-          <button
+          <Button
+            className='w-1/3 p-2'
+            variant='solid'
+            color='blue'
             onClick={handleAddDiscount}
-            className='w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600'
           >
             할인 추가
-          </button>
+          </Button>
         </div>
       </div>
-      <button
+      <Button
+        className='px-2 py-1 mt-2'
+        variant='solid'
+        color='green'
         onClick={handleEditComplete}
-        className='bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2'
       >
         수정 완료
-      </button>
+      </Button>
     </div>
   );
 };
