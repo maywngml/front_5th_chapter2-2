@@ -1,4 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
+import cn from 'clsx';
 
 export type ButtonVariant = 'solid' | 'ghost' | 'text';
 export type ButtonColor = 'black' | 'white' | 'blue' | 'red' | 'gray' | 'green';
@@ -44,9 +45,11 @@ export const Button = ({
   color = 'blue',
   ...rest
 }: ButtonProps) => {
-  const newClassName = `${className && `${className} `}${
-    buttonStyles[variant][color]
-  } rounded disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500`;
+  const newClassName = cn(
+    className,
+    buttonStyles[variant][color],
+    'rounded disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500',
+  );
 
   return (
     <button
