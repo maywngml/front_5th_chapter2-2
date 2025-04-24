@@ -1,5 +1,6 @@
 import { EditProductForm } from './EditProductForm';
 import { ProductDiscountEditor } from './ProductDiscountEditor';
+import { Button } from '../ui';
 import type { Product } from '@/types';
 
 interface ProductAccordionProps {
@@ -23,18 +24,26 @@ export const ProductAccordion = ({
   onCompleteEdit,
   onToggleButtonClick,
 }: ProductAccordionProps) => {
+  const { id, name, price, stock } = product;
+
+  const handleClick = () => {
+    onToggleButtonClick(id);
+  };
+
   return (
     <div
       data-testid={`product-${index + 1}`}
       className='bg-white p-4 rounded shadow'
     >
-      <button
-        data-testid='toggle-button'
-        onClick={() => onToggleButtonClick(product.id)}
+      <Button
         className='w-full text-left font-semibold'
+        variant='text'
+        color='black'
+        data-testid='toggle-button'
+        onClick={handleClick}
       >
-        {product.name} - {product.price}원 (재고: {product.stock})
-      </button>
+        {name} - {price}원 (재고: {stock})
+      </Button>
       {isOpen && (
         <div className='mt-2'>
           {isEditing ? (

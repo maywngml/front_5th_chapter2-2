@@ -1,4 +1,5 @@
-import { Product } from '@/types';
+import { Button } from '../ui';
+import type { Product } from '@/types';
 
 interface ProductDiscountEditorProps {
   product: Product;
@@ -10,6 +11,10 @@ export const ProductDiscountEditor = ({
   onProductEdit,
 }: ProductDiscountEditorProps) => {
   const { id, discounts } = product;
+
+  const handleClick = () => {
+    onProductEdit(id);
+  };
 
   return (
     <div>
@@ -23,13 +28,15 @@ export const ProductDiscountEditor = ({
           </span>
         </div>
       ))}
-      <button
+      <Button
+        className='px-2 py-1 mt-2'
+        variant='solid'
+        color='blue'
         data-testid='modify-button'
-        onClick={() => onProductEdit(id)}
-        className='bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2'
+        onClick={handleClick}
       >
         수정
-      </button>
+      </Button>
     </div>
   );
 };
