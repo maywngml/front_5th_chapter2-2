@@ -1,4 +1,4 @@
-import { CartItem, Coupon, Discount, Product } from '../../types';
+import { CartItem, Coupon, Discount, Product, TotalPrice } from '../../types';
 
 export const addProductToCart = (cart: CartItem[], product: Product) => {
   const existingItem = cart.find((item) => item.product.id === product.id);
@@ -72,7 +72,7 @@ const calculateDiscountedPrice = (price: number, coupon: Coupon | null) => {
 export const calculateCartTotal = (
   cart: CartItem[],
   selectedCoupon: Coupon | null,
-) => {
+): TotalPrice => {
   const totalBeforeDiscount = cart.reduce(
     (acc, { product, quantity }: CartItem) => acc + product.price * quantity,
     0,
