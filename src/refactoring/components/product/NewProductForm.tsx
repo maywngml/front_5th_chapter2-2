@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Button } from '../ui';
 import { validateFields } from '@/refactoring/utils';
 import type { Product } from '@/types';
@@ -16,6 +16,19 @@ const initialProduct = {
 export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
   const [newProduct, setNewProduct] =
     useState<Omit<Product, 'id' | 'discounts'>>(initialProduct);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value, type } = e.target;
+
+    setNewProduct((prevNewProduct) => {
+      return {
+        ...prevNewProduct,
+        [name]: type === 'number' ? parseInt(value) : value,
+      };
+    });
+  };
 
   const handleClick = () => {
     if (
@@ -49,10 +62,9 @@ export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
         <input
           id='productName'
           type='text'
+          name='name'
           value={newProduct.name}
-          onChange={(e) =>
-            setNewProduct({ ...newProduct, name: e.target.value })
-          }
+          onChange={handleChange}
           className='w-full p-2 border rounded'
         />
       </div>
@@ -66,13 +78,9 @@ export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
         <input
           id='productPrice'
           type='number'
+          name='price'
           value={newProduct.price}
-          onChange={(e) =>
-            setNewProduct({
-              ...newProduct,
-              price: parseInt(e.target.value),
-            })
-          }
+          onChange={handleChange}
           className='w-full p-2 border rounded'
         />
       </div>
@@ -86,13 +94,9 @@ export const NewProductForm = ({ onAddNewProduct }: NewProductFormProps) => {
         <input
           id='productStock'
           type='number'
+          name='stock'
           value={newProduct.stock}
-          onChange={(e) =>
-            setNewProduct({
-              ...newProduct,
-              stock: parseInt(e.target.value),
-            })
-          }
+          onChange={handleChange}
           className='w-full p-2 border rounded'
         />
       </div>
