@@ -1,16 +1,17 @@
+import { ReactNode } from 'react';
 import { getMaxDiscount } from '@/refactoring/models/cart';
 import { Product } from '@/types';
 
 interface ProductCardProps {
   remainingStock: number;
   product: Product;
-  addToCart: (product: Product) => void;
+  children: ReactNode;
 }
 
 export const ProductCard = ({
   remainingStock,
   product,
-  addToCart,
+  children,
 }: ProductCardProps) => {
   const { id, name, price, discounts } = product;
 
@@ -47,17 +48,7 @@ export const ProductCard = ({
           ))}
         </ul>
       )}
-      <button
-        onClick={() => addToCart(product)}
-        className={`w-full px-3 py-1 rounded ${
-          remainingStock > 0
-            ? 'bg-blue-500 text-white hover:bg-blue-600'
-            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-        }`}
-        disabled={remainingStock <= 0}
-      >
-        {remainingStock > 0 ? '장바구니에 추가' : '품절'}
-      </button>
+      {children}
     </div>
   );
 };
