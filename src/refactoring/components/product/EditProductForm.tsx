@@ -28,11 +28,10 @@ export const EditProductForm = ({
   // 새로운 핸들러 함수 추가
   const handlePriceUpdate = (newPrice: number) => {
     setEditingProduct((prevEditingProduct) => {
-      if (prevEditingProduct) {
-        return { ...prevEditingProduct, price: newPrice };
-      } else {
-        return prevEditingProduct;
-      }
+      return {
+        ...prevEditingProduct,
+        price: newPrice,
+      };
     });
   };
 
