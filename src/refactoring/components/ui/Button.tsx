@@ -21,12 +21,12 @@ const buttonStyles = {
     green: 'outline outline-green-500 text-green-500',
   },
   text: {
-    black: 'text-black hover:bg-gray-700',
-    white: 'text-white hover:bg-blue-100',
-    blue: 'text-blue-500 hover:bg-blue-600',
-    red: 'text-red-500 hover:bg-red-60',
-    gray: 'text-gray-300 hover:bg-gray-400',
-    green: 'text-green-500 hover:bg-green-600',
+    black: 'text-black',
+    white: 'text-white',
+    blue: 'text-blue-500',
+    red: 'text-red-500',
+    gray: 'text-gray-300',
+    green: 'text-green-500',
   },
 };
 
