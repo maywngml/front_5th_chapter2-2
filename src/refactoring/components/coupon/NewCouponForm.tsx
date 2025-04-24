@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '../ui';
 import { validateFields } from '@/refactoring/utils';
 import type { Coupon } from '@/types';
 
@@ -16,7 +17,7 @@ const initialNewCoupon: Coupon = {
 export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
   const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);
 
-  const handleAddCoupon = (newCoupon: Coupon) => {
+  const handleAddCoupon = () => {
     if (validateFields<Coupon>(newCoupon, '새 쿠폰 정보를 입력해주세요.'))
       return;
 
@@ -67,14 +68,14 @@ export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
           className='w-full p-2 border rounded'
         />
       </div>
-      <button
-        onClick={() => {
-          handleAddCoupon(newCoupon);
-        }}
-        className='w-full bg-green-500 text-white p-2 rounded hover:bg-green-600'
+      <Button
+        className='w-full p-2'
+        variant='solid'
+        color='green'
+        onClick={handleAddCoupon}
       >
         쿠폰 추가
-      </button>
+      </Button>
     </div>
   );
 };
